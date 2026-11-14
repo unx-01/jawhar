@@ -38,6 +38,14 @@ _start:
     cli
     movl %eax, mb_magic
     movl %ebx, mb_info
+
+    # Zero .bss before using it: the page tables and stack live there.
+    movl $__bss_start, %edi
+    movl $__bss_end, %ecx
+    subl %edi, %ecx
+    xorl %eax, %eax
+    rep stosb
+
     movl $stack_top, %esp
     movl %esp, %ebp
 
@@ -95,22 +103,10 @@ long_mode:
     movw %ax, %fs
     movw %ax, %gs
 
-    movq $stack_top, %rsp
-    movq %rsp, %rbp
     leaq stack_top(%rip), %rsp
     movq %rsp, %rbp
 
-    # 3. صفّر .bss — إلزامي قبل أي كود Rust/C
-    leaq __bss_start(%rip), %rdi
-    leaq __bss_end(%rip),   %rcx
-    subq %rdi, %rcx
-    xorl %eax, %eax
-    rep stosb
-
-    # 4. (اختياري) إعادة تحميل GDT من Rust — يُفيد فقط لو أضفت TSS
-    # call init
-
-    # 5. مرّر معاملات Multiboot واستدعِ النواة
+    # Pass the Multiboot arguments to the kernel.
     movl mb_magic(%rip), %edi     # arg0
     movl mb_info(%rip),  %esi     # arg1
     call __init

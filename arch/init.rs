@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+#![allow(dead_code)]
 
 #[path = "mod.rs"]
 mod arch;
@@ -7,11 +8,26 @@ mod arch;
 #[path = "../lib/io.rs"]
 mod io;
 
-#[path = "../drives/vga/tty.rs"]
+#[path = "../drives/tty/tty.rs"]
 mod tty;
+
+#[path = "../drives/console/console.rs"]
+mod console;
+
+#[path = "../drives/keyboard/keyboard.rs"]
+mod keyboard;
+
+#[path = "../lib/printk.rs"]
+mod printk;
 
 #[path = "../mm/mem.rs"]
 mod mem;
+
+#[path = "../mm/vmm.rs"]
+mod vmm;
+
+#[path = "../process/init.rs"]
+mod process;
 
 #[no_mangle]
 pub extern "C" fn __init(a0: usize, a1: usize) -> ! {
@@ -19,7 +35,7 @@ pub extern "C" fn __init(a0: usize, a1: usize) -> ! {
     let _ = mem::memcpy;
 
     arch::init();
-    io::println("jawhar");
+    console::console();
     tty::tty();
 
     arch::halt_forever();

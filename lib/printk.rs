@@ -1,3 +1,7 @@
-pub fn printk(num: u8,msg: String) {
-    if (num => 9) {io::print(msg)}
+use crate::io;
+
+pub fn printk(level: u8, msg: &str) {
+    if level <= 9 {
+        io::print(msg);
+    }
 }

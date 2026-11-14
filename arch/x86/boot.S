@@ -44,6 +44,13 @@ _start:
     ljmp $0x08, $reload_cs
 
 reload_cs:
+    # Zero .bss (the stack lives there).
+    movl $__bss_start, %edi
+    movl $__bss_end, %ecx
+    subl %edi, %ecx
+    xorl %eax, %eax
+    rep stosb
+
     # Set up stack
     movl $stack_top, %esp
     movl %esp, %ebp

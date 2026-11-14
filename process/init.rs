@@ -1,11 +1,15 @@
-#![no_std]
-pub fn _exit(mut status: i32) {
-    let pid = pid-1;
-    return 0;
+use core::sync::atomic::{AtomicI32, Ordering};
+
+static NEXT_PID: AtomicI32 = AtomicI32::new(1);
+
+pub fn _exit(_status: i32) -> ! {
+    loop {
+        core::hint::spin_loop();
+    }
 }
-pub fn fork(mut _process: i32) -> i32 {
-    let pid= pid+1;
-    return 0;
+
+pub fn fork(_process: i32) -> i32 {
+    NEXT_PID.fetch_add(1, Ordering::Relaxed)
 }
 
 pub fn thread() {}

@@ -8,4 +8,4 @@ date:   Tue Oct 20 13:27:37 2026 +0000
                       Ahdaytuha liman hawat rawai'al-khisali
 
                       
-this is alpha versoin of jawhar kernel 0.001 (no tty, gpu, posix ...)
+this is alpha version of jawhar kernel 0.001 (no tty, gpu, posix ...)

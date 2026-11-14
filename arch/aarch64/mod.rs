@@ -1,5 +1,7 @@
 use core::arch::asm;
 
+pub mod sys;
+
 /// aarch64 لا يحتوي GDT. التهيئة المعمارية تكافئ:
 /// - ضبط SCTLR_EL1 (MMU off حتى نبني جداول الترجمة)
 /// - قراءة CurrentEL للتأكد أننا في EL1
